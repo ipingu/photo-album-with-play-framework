@@ -1,0 +1,64 @@
+#{set 'moreStyles'}
+        #{stylesheet 'crud.css' /}
+        #{stylesheet 'bootstrap.css' /}
+#{/set}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>#{get 'title' /}</title>
+<meta charset="${_response_encoding}">
+<link rel="stylesheet" media="screen"
+	href="@{'/public/stylesheets/glisse.css'}">
+<link rel="stylesheet" media="screen"
+	href="@{'/public/stylesheets/bootstrap.css'}">
+<link rel="stylesheet" media="screen"
+	href="@{'/public/stylesheets/main.css'}">
+#{get 'moreStyles' /}
+<link rel="shortcut icon" type="image/png"
+	href="@{'/public/images/favicon.png'}">
+<script src="@{'/public/javascripts/jquery-1.6.4.min.js'}"
+	type="text/javascript" charset="${_response_encoding}"></script>
+#{get 'moreScripts' /}
+<script src="@{'/public/javascripts/glisse.js'}"
+	type="text/javascript" charset="${_response_encoding}"></script>
+</head>
+<body>
+	<div class="container">
+
+		<div class="navbar">
+			<div class="navbar-inner">
+				<div class="container">
+					<div class="nav-collapse">
+						<a class="brand" href="#">Sarah Alcalay</a>
+						<ul class="nav">
+							#{list items:controllers.Application.getGalleries(), as:'gallery'}
+							<li class="">
+							#{if session.username}
+								<a href="@{Galleries.show(gallery.id)}">${gallery}</a>
+							#{/if}
+							#{else}
+								<a href="@{Application.showGallery(gallery.id)}">${gallery}</a>								
+							#{/else}
+							</li>
+							#{/list}
+						</ul>
+						#{if session.username}
+						<p class="navbar-text pull-right">
+							<a class="btn btn-danger" href="@{Secure.logout()}"><i class="icon-off icon-white"></i> Logout</a>
+						</p>
+						#{/if}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<br />
+		<br />
+		
+		#{doLayout /}
+		
+	</div>
+</body>
+</html>

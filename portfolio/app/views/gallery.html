@@ -1,0 +1,26 @@
+#{extends 'main.html' /}
+#{set title:'Gallery' /}
+		
+		<!-- Beginning pictures carousel -->
+
+		<div class="row">
+			<div class="span12 columns" style="text-align: center">
+				<ul class="gallery">
+					#{list items:gallery.pictures, as:'picture'}
+					<li>
+						<img class="tl" title="${picture.title}" rel="group1" src="@@{Application.thumbnail(gallery.id, picture.filename)}" data-glisse-big="@@{Application.fullsize(gallery.id, picture.filename)}" alt="${picture.title}" />
+					<li>	
+					#{/list}
+				</ul>
+			</div>
+		</div>
+					
+		<script>
+			$(function(){
+				$('.tl').glisse({
+					changeSpeed:550,
+					speed: 500,
+					effect: 'fadeBig',
+					fullscreen: false
+					});});
+		</script>

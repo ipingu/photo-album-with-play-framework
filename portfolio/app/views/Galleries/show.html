@@ -1,0 +1,70 @@
+#{extends 'CRUD/layout.html' /}
+
+<div class="row">
+	<div class="span12 well">
+		<form action="@{Application.uploadSinglePicture}" class="form-horizontal" enctype="multipart/form-data" method="post">
+			<input type="hidden" name="gallery" value="${object.id}" />
+			<fieldset>
+				<legend>Album settings</legend>
+				<div class="control-group #{ifError 'NoFile'}error#{/ifError}">
+					<label for="name">Name</label>
+					<div class="controls">
+						<input id="name" name="name" type="text" value="${object.name}" />
+						#{ifError 'name'}<p class="help-inline">Nom invalide</p>#{/ifError}
+					</div>
+			    <button type="submit" class="btn btn-primary">Update</button>
+				</div>
+			</fieldset>
+		</form>
+	
+
+		<form action="@{Application.uploadSinglePicture}" class="form-horizontal" enctype="multipart/form-data" method="post">
+		<input type="hidden" name="galleryId" value="${object.id}" />
+			<fieldset>
+				<legend>Add a new picture</legend>
+				<div class="control-group #{ifError 'NoFile'}error#{/ifError}">
+					<label for="file">File</label>
+					<div class="controls">
+						<input id="file" name="file" type="file" />
+						#{ifError 'NoFile'}<p class="help-inline">Missing file</p>#{/ifError}
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="title">Title</label>
+					<div class="controls">
+						<input id="title" name="title" type="text" />
+					</div>
+				</div>
+			   <div class="form-actions">
+			    <button type="submit" class="btn btn-primary">Upload picture</button>
+			  </div>
+				
+			</fieldset>
+		</form>
+	</div>
+</div>
+
+<div class="row">
+	<div class="span12 well">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Picture</th>
+					<th>Title</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+			#{list items:object.pictures, as:'picture'}
+			<tr>
+				<td><img src="@@{Application.thumbnail(object.id, picture.filename)}" /></td>
+				<td>${picture.title}</td>
+				<td>
+					<a class="btn btn-danger" href=""><i class="icon-trash icon-white"></i> Delete</a>
+				</td>
+			</tr>
+			#{/list}
+			</tbody>
+</table>
+	</div>
+</div>

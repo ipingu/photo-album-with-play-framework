@@ -1,0 +1,21 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:"Albums de photos" /}
+
+<h2 id="crudListTitle">Gestion des albums de photos</h2>
+
+<p>Cette section permet de modifier le contenu des albums de photos. Cliquez sur le nom d'un album pour y ajouter des photos.</p>
+
+<div id="crudListTable">
+    #{crud.table fields:['id', 'name']}
+    
+        #{crud.custom 'name'}
+			#{a @Galleries.show(object.id)}${object.name}#{/a}
+		#{/crud.custom}
+    
+    #{/crud.table}
+</div>
+
+<div id="crudListPagination">
+    #{crud.pagination /}
+</div>
+
