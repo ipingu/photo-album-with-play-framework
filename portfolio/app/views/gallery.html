@@ -1,26 +1,29 @@
 #{extends 'main.html' /}
 #{set title:'Gallery' /}
 		
-		<!-- Beginning pictures carousel -->
-
 		<div class="row">
-			<div class="span12 columns" style="text-align: center">
-				<ul class="gallery">
+			<div id="wrap" class="span12 columns" style="text-align: center">
+				<div id="controller" style="display:none">
 					#{list items:gallery.pictures, as:'picture'}
-					<li>
-						<img class="tl" title="${picture.title}" rel="group1" src="@@{Application.thumbnail(gallery.id, picture.filename)}" data-glisse-big="@@{Application.fullsize(gallery.id, picture.filename)}" alt="${picture.title}" />
-					<li>	
+					<span class="jFlowControl">No ${picture_index}</span>	
 					#{/list}
-				</ul>
+				</div>
+				
+				<div id="slides">
+					#{list items:gallery.pictures, as:'picture'}
+					<div>
+						<img width="300px" height="500px" title="${picture.title}" src="@@{Application.thumbnail(gallery.id, picture.id)}" alt="${picture.title}" />
+					</div>	
+					#{/list}
+				</div>
+				
+				 <div id="prevNext">
+
+        <img src="images/prev.png" alt="Previous Tab" class="jFlowPrev" />
+
+        <img src="images/next.png" alt="Next Tab" class="jFlowNext" />
+
+    </div>
+				
 			</div>
 		</div>
-					
-		<script>
-			$(function(){
-				$('.tl').glisse({
-					changeSpeed:550,
-					speed: 500,
-					effect: 'fadeBig',
-					fullscreen: false
-					});});
-		</script>

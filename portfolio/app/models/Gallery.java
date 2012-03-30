@@ -29,4 +29,8 @@ public class Gallery extends Model {
 	public void addPicture(Picture picture) {
 		pictures.add(picture);
 	}
+
+	public void remove(Picture picture) {
+		pictures.remove(picture);
+	}
 }

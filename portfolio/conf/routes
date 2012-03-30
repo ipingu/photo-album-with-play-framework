@@ -7,7 +7,6 @@
 
 # Home page
 GET     /                                       Application.index
-
 GET 	/gallery/{id}/{name}					Application.showGallery
 
 

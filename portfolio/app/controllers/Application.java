@@ -16,11 +16,11 @@ import models.*;
 
 public class Application extends Controller {
 
-	private static final File FILE_FOLDER = Play.getFile("pictures");
+	public static final File FILE_FOLDER = Play.getFile("pictures");
 	
-	private static final String THUMBNAILS = "thumbnail";
-	private static final String FULLSIZE = "fullsize";
-	private static final String RESIZED = "resized";
+	public static final String THUMBNAILS = "thumbnail";
+	public static final String FULLSIZE = "fullsize";
+	public static final String RESIZED = "resized";
 
 	@Util
 	public static List<Gallery> getGalleries() {
@@ -47,9 +47,10 @@ public class Application extends Controller {
     	if (validation.hasErrors()) {
     		params.flash();
     		validation.keep();
-    		Galleries.create(); // can generate error if the galleryId http parameter has not been passed
+    		Galleries.create(); 
     	}
-    	uploadPicture(file, galleryId, file.getName());
+    	
+    	Picture.upload(file, galleryId, file.getName());
     	
     	Picture picture = new Picture();
     	picture.filename = file.getName();
@@ -60,26 +61,7 @@ public class Application extends Controller {
     	gallery.addPicture(picture);
     	gallery.save();
     	
-    	System.out.println("Gallery = " + gallery.pictures.size());
-    	
     	Galleries.show(galleryId);
-    }
-    
-    @Util
-    private static void uploadPicture(File file, String galleryId, String destination) {
-    	File galleryFolder = new File(FILE_FOLDER, galleryId.toString());
-    	
-    	// Mini
-    	File thumbnail = new File(galleryFolder, THUMBNAILS + File.separatorChar + destination);
-    	Images.resize(file, thumbnail, 200, 150, true);
-
-    	// Fixed size
-    	File fixedSize = new File(galleryFolder, RESIZED + File.separatorChar + destination);
-    	Images.resize(file, fixedSize, 940, 450, true);
-    	
-    	// Full size
-    	File fullSize = new File(galleryFolder, FULLSIZE + File.separatorChar + destination);
-    	Files.copy(file, fullSize);
     }
     
     @Util
@@ -95,8 +77,9 @@ public class Application extends Controller {
     /**
      * Render a thumbnail picture for a specific gallery.
      */
-    public static void thumbnail(String galleryId, String filename) {
-     	File picture = new File(FILE_FOLDER, galleryId + File.separatorChar + THUMBNAILS + File.separatorChar + filename);
+    public static void thumbnail(Long galleryId, Long pictureId) {
+     	File picture = Picture.getFile(galleryId, pictureId, Application.THUMBNAILS);
+     	if (! picture.exists()) notFound();
      	renderBinary(picture);
     }
     
@@ -105,14 +88,16 @@ public class Application extends Controller {
      */
     public static void resized(String galleryId, String filename) {
      	File picture = new File(FILE_FOLDER, galleryId + File.separatorChar + RESIZED + File.separatorChar + filename);
+     	if (! picture.exists()) notFound();
      	renderBinary(picture);
     }
     
     /**
      * Render a fullsized picture for a specific gallery.
      */
-    public static void fullsize(String galleryId, String filename) {
-     	File picture = new File(FILE_FOLDER, galleryId + File.separatorChar + FULLSIZE + File.separatorChar + filename);
+    public static void fullsize(Long galleryId, Long pictureId) {
+     	File picture = Picture.getFile(galleryId, pictureId, Application.FULLSIZE);
+     	if (picture == null || ! picture.exists()) notFound();
      	renderBinary(picture);
     }
 }
