@@ -1,0 +1,23 @@
+#{extends 'main.html' /}
+#{set title:'Gallery' /}
+		
+		#{list items:gallery.pictures, as:'picture'}
+			#{if picture_index % 4 == 1}
+			<div class="row">
+			#{/if}
+			
+			<div class="span3">
+				<img style="border:1px solid #333; padding:3px" title="${picture.title}" src="@@{Application.thumbnail(gallery.id, picture.id)}" alt="${picture.title}" />
+			</div>
+			
+			
+			#{if picture_isLast}
+				#{list items:1..(3 - (picture_index % 4))}
+				<div class="span3"></div>
+				#{/list}			
+			#{/if}
+
+			#{if picture_index % 4 == 0}
+			</div> <!-- end row -->
+			#{/if}
+		#{/list}

@@ -15,11 +15,16 @@ import play.mvc.Util;
 @Entity
 public class Picture extends Model {
 
-	@Required public String filename;
 	public String title;
 	
-	public void deleteFiles() {
+	public void delete(Long galleryId) {
+		File mini = getFile(galleryId, id, Application.THUMBNAILS);
+		mini.delete();
 		
+		File resized = getFile(galleryId, id, Application.RESIZED);
+		mini.delete();
+		
+		this.delete();
 	}
 	
 	public static void upload(File file, String galleryId, String destination) {
@@ -32,16 +37,10 @@ public class Picture extends Model {
     	// Fixed size
     	File fixedSize = new File(galleryFolder, Application.RESIZED + File.separatorChar + destination);
     	Images.resize(file, fixedSize, 940, 450, true);
-    	
-    	// Full size
-    	File fullSize = new File(galleryFolder, Application.FULLSIZE + File.separatorChar + destination);
-    	Files.copy(file, fullSize);
 	}
 	
 	public static File getFile(Long galleryId, Long pictureId, String pictureType) {
-		Picture picture = Picture.findById(pictureId);
-		if (picture == null) return null;
-		File file = new File(Application.FILE_FOLDER, galleryId.toString() + File.separatorChar + pictureType + File.separatorChar + picture.filename);
+		File file = new File(Application.FILE_FOLDER, galleryId.toString() + File.separatorChar + pictureType + File.separatorChar + pictureId.toString());
 		return file;
 	}
 	

@@ -1,0 +1,11 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+#{list 'contents'}
+<div class="row">
+	<div class="span12">
+	<h1>${_title}</h1>
+	${_html}
+	</div>
+</div>
+#{/list}
