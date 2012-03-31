@@ -40,28 +40,34 @@ public class Application extends Controller {
     	Gallery gallery = Gallery.findById(id);
     	notFoundIfNull(gallery);
     	
-    	render("gallery.html", gallery);
+    	render("Application/gallery.html", gallery);
     }
     
     public static void uploadSinglePicture(@Required File file, @Required String galleryId, String title) throws Exception {
     	if (validation.hasErrors()) {
     		params.flash();
     		validation.keep();
-    		Galleries.create(); 
+    		Galleries.create(); // redirect to form creation
     	}
-    	
-    	Picture.upload(file, galleryId, file.getName());
-    	
+    
     	Picture picture = new Picture();
-    	picture.filename = file.getName();
     	picture.title = title == null ? "" : title;
     	picture.save();
+    
+    	Picture.upload(file, galleryId, picture.id.toString());
     	
     	Gallery gallery = Gallery.findById(Long.valueOf(galleryId));
     	gallery.addPicture(picture);
     	gallery.save();
     	
+    	Logger.info("Picture %s uploaded in gallery %s", picture.id, galleryId);
+    	
     	Galleries.show(galleryId);
+    }
+    
+    public static void showContents() {
+    	List<Content> contents = Content.findAll();
+    	render(contents);
     }
     
     @Util
@@ -86,18 +92,9 @@ public class Application extends Controller {
     /**
      * Render a resized picture for a specific gallery.
      */
-    public static void resized(String galleryId, String filename) {
-     	File picture = new File(FILE_FOLDER, galleryId + File.separatorChar + RESIZED + File.separatorChar + filename);
-     	if (! picture.exists()) notFound();
-     	renderBinary(picture);
-    }
-    
-    /**
-     * Render a fullsized picture for a specific gallery.
-     */
-    public static void fullsize(Long galleryId, Long pictureId) {
-     	File picture = Picture.getFile(galleryId, pictureId, Application.FULLSIZE);
-     	if (picture == null || ! picture.exists()) notFound();
+    public static void resized(Long galleryId, Long pictureId) {
+    	File picture = Picture.getFile(galleryId, pictureId, Application.RESIZED);
+       	if (! picture.exists()) notFound();
      	renderBinary(picture);
     }
 }

@@ -25,7 +25,7 @@
 				<div class="control-group #{ifError 'NoFile'}error#{/ifError}">
 					<label for="file">File</label>
 					<div class="controls">
-						<input id="file" name="file" type="file" />
+						<input id="file" name="file" type="file"/>
 						#{ifError 'NoFile'}<p class="help-inline">Missing file</p>#{/ifError}
 					</div>
 				</div>
@@ -57,10 +57,10 @@
 			<tbody>
 			#{list items:object.pictures, as:'picture'}
 			<tr>
-				<td><img src="@@{Application.thumbnail(object.id, picture.filename)}" /></td>
+				<td><img src="@@{Application.thumbnail(object.id, picture.id)}" /></td>
 				<td>${picture.title}</td>
 				<td>
-					<a class="btn btn-danger" href=""><i class="icon-trash icon-white"></i> Delete</a>
+					<a class="btn btn-danger" href="@{Galleries.deletePicture(object.id, picture.id)}"><i class="icon-trash icon-white"></i> Delete</a>
 				</td>
 			</tr>
 			#{/list}
