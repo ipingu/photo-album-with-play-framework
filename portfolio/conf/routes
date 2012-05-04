@@ -7,14 +7,16 @@
 
 # Home page
 GET     /                                       Application.index
-GET 	/gallery/{id}/{name}					Application.showGallery
-
+GET 	/album/{id}/{name}							Application.showGallery
+GET		/presse									Application.showContents
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
+
+# *		/crud/show/{id}								Galleries.show
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

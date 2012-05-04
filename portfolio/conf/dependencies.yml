@@ -4,3 +4,4 @@ require:
     - play 
     - play -> secure
     - play -> crud
+    - play -> cloudbees 0.2.2
