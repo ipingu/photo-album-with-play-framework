@@ -5,3 +5,11 @@ body {
 .content {
 	background-color: #EFEFEF;
 }
+
+h1 {
+	padding-bottom: 1em;
+}
+
+.error {
+	color: red;
+}

@@ -3,6 +3,7 @@ package models;
 import java.io.File;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 import controllers.Application;
 
@@ -15,27 +16,29 @@ import play.mvc.Util;
 @Entity
 public class Picture extends Model {
 
+	@OneToOne public Gallery gallery;
 	public String title;
 	
-	public void delete(Long galleryId) {
-		File mini = getFile(galleryId, id, Application.THUMBNAILS);
+	@Override
+	public void _delete() {
+		File mini = getFile(gallery.id, id, Application.THUMBNAILS);
 		mini.delete();
 		
-		File resized = getFile(galleryId, id, Application.RESIZED);
-		mini.delete();
+		File resized = getFile(gallery.id, id, Application.RESIZED);
+		resized.delete();
 		
-		this.delete();
+		super._delete();
 	}
 	
-	public static void upload(File file, String galleryId, String destination) {
-    	File galleryFolder = new File(Application.FILE_FOLDER, galleryId.toString());
+	public void upload(File file) {
+    	File galleryFolder = new File(Application.FILE_FOLDER, gallery.id.toString());
     	
     	// Mini
-    	File thumbnail = new File(galleryFolder, Application.THUMBNAILS + File.separatorChar + destination);
+    	File thumbnail = new File(galleryFolder, Application.THUMBNAILS + File.separatorChar + this.id);
     	Images.resize(file, thumbnail, 200, 150, true);
 
     	// Fixed size
-    	File fixedSize = new File(galleryFolder, Application.RESIZED + File.separatorChar + destination);
+    	File fixedSize = new File(galleryFolder, Application.RESIZED + File.separatorChar + this.id);
     	Images.resize(file, fixedSize, 940, 450, true);
 	}
 	

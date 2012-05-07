@@ -23,33 +23,49 @@ import java.util.List;;
 public class Gallery extends Model {
 
 	@Required public String name;
-
-	@OneToMany public List<Picture> pictures = new ArrayList<Picture>();
 	
 	@Override
 	public String toString() {
 		return name;
 	}
 
-	public void addPicture(Picture picture) {
-		pictures.add(picture);
-	}
-
-	public void remove(Picture picture) {
-		pictures.remove(picture);
-	}
-	
 	public static Gallery create(String name) {
 		Gallery gallery = new Gallery();
 		gallery.name = name;
 		gallery.save();
+
+		gallery.getGalleryFolder().mkdir();
+	
+		File thumbnailsPath = new File(gallery.getGalleryFolder(), Application.THUMBNAILS);
+		thumbnailsPath.mkdir();
+
+		File resizedsPath = new File(gallery.getGalleryFolder(), Application.RESIZED);
+		resizedsPath.mkdir();
 		
-		File galleryFolder = new File(Application.FILE_FOLDER, gallery.id.toString());
-		galleryFolder.mkdir();
-	
-		new File(galleryFolder, Application.THUMBNAILS).mkdir();
-		new File(galleryFolder, Application.RESIZED).mkdir();
-	
 		return gallery;
+	}
+	
+	private File getGalleryFolder() {
+		return new File(Application.FILE_FOLDER, this.id.toString());
+	}
+	
+	@Override
+	public void _delete() {
+		File thumbnailsPath = new File(this.getGalleryFolder(), Application.THUMBNAILS);
+		thumbnailsPath.delete();
+
+		File resizedsPath = new File(this.getGalleryFolder(), Application.RESIZED);
+		resizedsPath.delete();
+
+		this.getGalleryFolder().delete();
+
+		for (Picture picture : getPictures())
+			picture.delete();
+		
+		super._delete();
+	}
+
+	public List<Picture> getPictures() {
+		return Picture.find("byGallery", this).fetch();
 	}
 }

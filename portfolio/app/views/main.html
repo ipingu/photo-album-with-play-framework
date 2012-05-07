@@ -15,6 +15,7 @@
 #{get 'moreStyles' /}
 <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
 <script src="@{'/public/javascripts/jquery-1.6.4.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+<script src="@{'/public/javascripts/bootstrap-modal.js'}" type="text/javascript" charset="${_response_encoding}"></script>
 #{get 'moreScripts' /}
 <script src="@{'/public/javascripts/glisse.js'}" type="text/javascript" charset="${_response_encoding}"></script>
 	
@@ -35,7 +36,6 @@
 		<div class="navbar">
 			<div class="navbar-inner">
 				<div class="container">
-					<div class="nav-collapse">
 						#{if session.username}
 						<a class="brand" href="@{CRUD.index}">Administration</a>
 						#{/if}
@@ -56,18 +56,21 @@
 								<a href="@{Galleries.show(gallery.id)}">${gallery}</a>
 							#{/if}
 							#{else}
-								<a href="@{Application.showGallery(gallery.id, gallery.name)}">${gallery}</a>								
+								<a href="@{Application.showGallery(gallery.id, gallery.name?.slugify())}">${gallery}</a>								
 							#{/else}
 							</li>
 							#{/list}
+							
+							#{if session.username}
+							<li><a class="btn-small" href="@{Galleries.blank()}"><i class="icon-plus icon-white"></i></a>
+							#{/if}
 						</ul>
 						
 						#{if session.username}
-						<p class="navbar-text pull-right">
-							<a class="btn btn-danger" href="@{Secure.logout()}"><i class="icon-off icon-white"></i> Logout</a>
+						<p class="navbar-text pull-right" style="padding-right: 30px; ">
+							<a class="btn-small btn-danger" href="@{Secure.logout()}"><i class="icon-off icon-white"></i> Quitter la zone d'administration</a>
 						</p>
 						#{/if}
-					</div>
 				</div>
 			</div>
 		</div>

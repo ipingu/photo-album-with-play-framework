@@ -1,7 +1,7 @@
 #{extends 'main.html' /}
 #{set title:'Gallery' /}
 		
-		#{list items:gallery.pictures, as:'picture'}
+		#{list items:pictures, as:'picture'}
 			#{if picture_index % 4 == 1}
 			<div class="row">
 			#{/if}

@@ -1,22 +1,23 @@
 #{extends 'main.html' /}
 #{set 'moreStyles'}
-    <link rel="stylesheet" type="text/css" media="screen" 
-        href="@{'/public/stylesheets/crud.css'}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/crud.css'}" />
 #{/set}
 
 		<!-- Beginning of admin row -->
 		
 		<div class="row">
+			<div class="span12">
 			#{if flash.success}
-			            <div class="alert alert-success">
-			                ${flash.success}
-			            </div>
+	            <div class="alert alert-success">
+	                ${flash.success}
+	            </div>
 			#{/if}
 			#{if flash.error || error}
-			            <div class="alert alert-error">
-			                ${error ?: flash.error}
-			            </div>
+	            <div class="alert alert-error">
+	                ${error ?: flash.error}
+	            </div>
 			#{/if}
+			</div>
 		</div>
 		
 		

@@ -1,11 +1,16 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
 
-#{list 'contents'}
+#{list items:contents, as:'content'}
 <div class="row">
 	<div class="span12">
-	<h1>${_title}</h1>
-	${_html}
+		<div class="well">
+			<h1>${content.title}</h1>
+			<div style="text-align: center">
+				<img src="@{Application.showImage(content.id)}" />
+			</div>
+			${content.html}
+		</div>
 	</div>
 </div>
 #{/list}

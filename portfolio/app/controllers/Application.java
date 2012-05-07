@@ -2,6 +2,7 @@ package controllers;
 
 import play.*;
 import play.data.validation.Required;
+import play.db.jpa.Blob;
 import play.db.jpa.JPABase;
 import play.libs.Files;
 import play.libs.Images;
@@ -36,12 +37,23 @@ public class Application extends Controller {
         }
     }
     
+    public static void showImage(Long id) {
+    	Content content = Content.findById(id);
+    	notFoundIfNull(content);
+		response.setContentTypeIfNotSet(content.image.type());
+		File file = content.image.getFile();
+		notFoundIfNull(file);
+		renderBinary(file);
+    }
+    
     public static void showGallery(Long id, String name) {
     	notFoundIfNull(id);
     	Gallery gallery = Gallery.findById(id);
     	notFoundIfNull(gallery);
     	
-    	render("Application/gallery.html", gallery);
+    	List<Picture> pictures = gallery.getPictures();
+    	
+    	render("Application/gallery.html", pictures, gallery);
     }
     
     public static void showContents() {

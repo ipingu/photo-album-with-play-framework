@@ -1,0 +1,23 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:"Liste des contenus de presse" /}
+
+
+<div class="row">
+	<div class="span12">
+		<div class="well">
+			<h1>Gestion des contenus de presse</h1>
+			
+			<div style="text-align: right">
+				<a class="btn btn-primary" href="@{blank()}">Créer un nouveau contenu de presse</a>
+			</div>
+			
+		    #{crud.table fields:['id', 'title']}
+		    
+		        #{crud.custom 'title'}
+					#{a @Contents.show(object.id)}${object.title}#{/a}
+				#{/crud.custom}
+		    
+		    #{/crud.table}
+		</div>
+	</div>
+</div>

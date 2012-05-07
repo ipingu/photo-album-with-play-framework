@@ -1,70 +1,96 @@
 #{extends 'CRUD/layout.html' /}
 
 <div class="row">
-	<div class="span12 well">
-		<form action="@{Galleries.changeName}" class="form-horizontal" enctype="multipart/form-data" method="post">
-			<input type="hidden" name="galleryId" value="${object.id}" />
-			<fieldset>
-				<legend>Album settings</legend>
-				<div class="control-group #{ifError 'NoFile'}error#{/ifError}">
-					<label for="name">Name</label>
-					<div class="controls">
-						<input id="name" name="name" type="text" value="${object.name}" />
-						#{ifError 'name'}<p class="help-inline">Nom invalide</p>#{/ifError}
+	<div class="span12">
+		<div class="well">
+			<div class="pull-right">
+			<div class="modal hide fade" id="myModal">
+			  <div class="modal-header">
+			    <button class="close" data-dismiss="modal">×</button>
+			    <h3>Suppression confirmation</h3>
+			  </div>
+			  <div class="modal-body">
+			    <p>Do you really want to delete this gallery and all its pictures ?</div>
+			  <div class="modal-footer">
+			    <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+			    <a href="@{Galleries.deleteGallery(object.id)}" class="btn btn-primary">Delete</a>
+			  </div>
+			</div>
+			
+				<a href="#myModal" data-toggle="modal" class="btn btn-danger">Delete gallery</a>
+			</div>
+		
+			<form action="@{Galleries.changeName}" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<input type="hidden" name="galleryId" value="${object.id}" />
+				<fieldset>
+					<legend>Album settings</legend>
+					<div class="control-group #{ifError 'NoFile'}error#{/ifError}">
+						<label for="name">Name</label>
+						<div class="controls">
+							<input id="name" name="name" type="text" value="${object.name}" />
+							#{ifError 'name'}<p class="help-inline error">Nom invalide</p>#{/ifError}
+						    <button type="submit" class="btn btn-primary">Update</button>
+						</div>
 					</div>
-			    <button type="submit" class="btn btn-primary">Update</button>
-				</div>
-			</fieldset>
-		</form>
+				</fieldset>
+			</form>
 	
 
-		<form action="@{Galleries.uploadSinglePicture}" class="form-horizontal" enctype="multipart/form-data" method="post">
-		<input type="hidden" name="galleryId" value="${object.id}" />
-			<fieldset>
-				<legend>Add a new picture</legend>
-				<div class="control-group #{ifError 'NoFile'}error#{/ifError}">
-					<label for="file">File</label>
-					<div class="controls">
-						<input id="file" name="file" type="file"/>
-						#{ifError 'NoFile'}<p class="help-inline">Missing file</p>#{/ifError}
+			<form action="@{Galleries.uploadSinglePicture}" class="form-horizontal" enctype="multipart/form-data" method="post">
+			<input type="hidden" name="galleryId" value="${object.id}" />
+				<fieldset>
+					<legend>Add a new picture</legend>
+					<div class="control-group #{ifError 'NoFile'}error#{/ifError}">
+						<label for="file">File</label>
+						<div class="controls">
+							<input id="file" name="file" type="file"/>
+							#{ifError 'NoFile'}<p class="help-inline">Missing file</p>#{/ifError}
+						</div>
 					</div>
-				</div>
-				<div class="control-group">
-					<label for="title">Title</label>
-					<div class="controls">
-						<input id="title" name="title" type="text" />
+					<div class="control-group">
+						<label for="title">Title</label>
+						<div class="controls">
+							<input id="title" name="title" type="text" />
+						</div>
 					</div>
-				</div>
-			   <div class="form-actions">
-			    <button type="submit" class="btn btn-primary">Upload picture</button>
-			  </div>
-				
-			</fieldset>
-		</form>
+					
+				   <div class="form-actions">
+				    <button type="submit" class="btn btn-primary">Upload picture</button>
+				  </div>
+					
+				</fieldset>
+			</form>
+		</div>
 	</div>
 </div>
 
 <div class="row">
-	<div class="span12 well">
-		<table class="table table-striped">
-			<thead>
+	<div class="span12">
+		<div class="well">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Picture</th>
+						<th>Title</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+				#{list items:object.pictures, as:'picture'}
 				<tr>
-					<th>Picture</th>
-					<th>Title</th>
-					<th>Actions</th>
+					<td><img src="@@{Application.thumbnail(object.id, picture.id)}" /></td>
+					<td>${picture.title}</td>
+					<td>
+						<a class="btn btn-danger" href="@{Galleries.deletePicture(picture.id)}"><i class="icon-trash icon-white"></i> Delete</a>
+					</td>
 				</tr>
-			</thead>
-			<tbody>
-			#{list items:object.pictures, as:'picture'}
-			<tr>
-				<td><img src="@@{Application.thumbnail(object.id, picture.id)}" /></td>
-				<td>${picture.title}</td>
-				<td>
-					<a class="btn btn-danger" href="@{Galleries.deletePicture(object.id, picture.id)}"><i class="icon-trash icon-white"></i> Delete</a>
-				</td>
-			</tr>
-			#{/list}
-			</tbody>
-</table>
+				#{/list}
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+$('#myModal').modal('hide');	
+</script>
