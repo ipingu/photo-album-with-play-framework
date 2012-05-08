@@ -1,0 +1,21 @@
+#{extends 'CRUD/layout.html' /}
+
+<div class="row">
+	<div class="span12">
+		<div class="well">
+			<form action="@{Galleries.createGallery}" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<fieldset>
+					<legend>Album settings</legend>
+					<div class="control-group #{ifError 'NoFile'}error#{/ifError}">
+						<label for="name">Name</label>
+						<div class="controls">
+							<input id="name" name="name" type="text" value="${name}" />
+							#{ifError 'name'}<p class="help-inline error">Nom invalide</p>#{/ifError}
+						</div>
+				    <button type="submit" class="btn btn-primary">Enregistrer</button>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</div>

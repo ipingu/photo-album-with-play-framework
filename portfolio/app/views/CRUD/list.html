@@ -1,24 +1,14 @@
 #{extends 'CRUD/layout.html' /}
 #{set title:messages.get('crud.list.title', type.name) /}
 
-<div id="crudList" class="${type.name}">
-
-    <h2 id="crudListTitle">&{'crud.list.title', type.name}</h2>
-
-    <div id="crudListSearch">
-        #{crud.search /}
-    </div>
-
-    <div id="crudListTable">
-        #{crud.table /}
-    </div>
-
-    <div id="crudListPagination">
-        #{crud.pagination /}
-    </div>
-
-    <p id="crudListAdd">
-        <a href="@{blank()}">&{'crud.add', type.modelName}</a>
-    </p>
-
+<div class="row ${type.name}">
+	<div class="span12">
+    	<div class="well">
+	    	<h1>&{'crud.list.title', type.name}</h1>
+	
+	        #{crud.table /}
+	
+			<a class="btn btn-primary" href="@{blank()}">&{'crud.add', type.modelName}</a>
+		</div>
+	</div>
 </div>

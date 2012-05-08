@@ -2,16 +2,26 @@ package controllers;
 
 import play.*;
 import play.data.validation.Required;
+import play.data.validation.URL;
 import play.db.jpa.Blob;
 import play.db.jpa.JPABase;
 import play.libs.Files;
 import play.libs.Images;
+import play.libs.WS.HttpResponse;
+import play.libs.WS.WSRequest;
 import play.mvc.*;
 import play.utils.Utils;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.*;
+
+import com.google.gdata.client.photos.PicasawebService;
+import com.google.gdata.data.photos.AlbumFeed;
+import com.google.gdata.data.photos.PhotoEntry;
+import com.google.gdata.util.ServiceException;
 
 import models.*;
 
@@ -26,6 +36,11 @@ public class Application extends Controller {
 	@Util
 	public static List<Gallery> getGalleries() {
     	return Gallery.all().fetch();
+	}
+	
+	@Util
+	public static List<Gallery> getPicasaGalleries() {
+    	return PicasaGallery.all().fetch();
 	}
 	
     public static void index() {
@@ -52,8 +67,33 @@ public class Application extends Controller {
     	notFoundIfNull(gallery);
     	
     	List<Picture> pictures = gallery.getPictures();
+    	List<ImageView> images = new ArrayList<ImageView>();
+    	for (Picture picture : pictures) images.add(picture.toImageView());
     	
-    	render("Application/gallery.html", pictures, gallery);
+    	render("Application/gallery.html", images, gallery);
+    }
+    
+    public static void showPicasaGallery(Long id, String name) throws IOException, ServiceException {
+    	notFoundIfNull(id);
+    	PicasaGallery gallery = PicasaGallery.findById(id);
+    	notFoundIfNull(gallery);
+    	
+    	PicasawebService service = new PicasawebService("portfolio");
+    	java.net.URL feedUrl = new java.net.URL(gallery.url);
+ 
+    	AlbumFeed feed = service.getFeed(feedUrl, AlbumFeed.class);
+    	List<PhotoEntry> photoEntries = feed.getPhotoEntries();
+
+    	List<ImageView> images = new ArrayList<ImageView>();
+    	for (PhotoEntry entry : photoEntries) {
+    		ImageView image = new ImageView();
+    		// We take the largest
+    		image.thumbnail = entry.getMediaThumbnails().get(entry.getMediaThumbnails().size() - 1).getUrl();
+    		image.url = entry.getMediaContents().get(0).getUrl();
+    		images.add(image);
+    	}
+    	
+    	render("Application/gallery.html", images, gallery);
     }
     
     public static void showContents() {

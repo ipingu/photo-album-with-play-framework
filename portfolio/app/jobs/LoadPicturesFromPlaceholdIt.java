@@ -46,10 +46,10 @@ public class LoadPicturesFromPlaceholdIt extends Job{
 	
 	@Override
 	public void doJob() throws Exception {
-		Logger.info("Load data from placehold.it");
-		
 		if (! Play.configuration.getProperty("application.mode").equals("dev")) return;
 		if (Picture.count() > 0) return;
+
+		Logger.info("Dev mode & no pictures yet saved.\nStarting to load data from placehold.it");
 		
 		for (Map.Entry<String, Integer> entry : albums.entrySet()) {
 			Gallery gallery = Gallery.create(entry.getKey());

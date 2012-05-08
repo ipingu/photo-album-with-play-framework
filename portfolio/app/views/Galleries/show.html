@@ -23,7 +23,7 @@
 			<form action="@{Galleries.changeName}" class="form-horizontal" enctype="multipart/form-data" method="post">
 				<input type="hidden" name="galleryId" value="${object.id}" />
 				<fieldset>
-					<legend>Album settings</legend>
+					<legend><h1>Album settings</h1></legend>
 					<div class="control-group #{ifError 'NoFile'}error#{/ifError}">
 						<label for="name">Name</label>
 						<div class="controls">

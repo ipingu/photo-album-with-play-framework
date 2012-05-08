@@ -60,9 +60,21 @@
 							#{/else}
 							</li>
 							#{/list}
+						
+							#{list items:controllers.Application.getPicasaGalleries(), as:'gallery'}
+							<li class="">
+							#{if session.username}
+								<a href="@{PicasaGalleries.show(gallery.id)}">${gallery}</a>
+							#{/if}
+							#{else}
+								<a href="@{Application.showPicasaGallery(gallery.id, gallery.name?.slugify())}">${gallery}</a>								
+							#{/else}
+							</li>
+							#{/list}
 							
 							#{if session.username}
 							<li><a class="btn-small" href="@{Galleries.blank()}"><i class="icon-plus icon-white"></i></a>
+							<li><a class="btn-small" href="@{PicasaGalleries.list()}">Picasa</a>
 							#{/if}
 						</ul>
 						
