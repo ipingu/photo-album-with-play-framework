@@ -49,7 +49,8 @@ public class Picture extends Model {
 	
 	public ImageView toImageView() {
 		ImageView image = new ImageView();
-		image.thumbnail = "/public/pictures/" + this.gallery.getId() + "/thumbnail/" + this.getId();
+		image.thumbnail = "/public/pictures/" + gallery.id.toString() + "/" + Application.THUMBNAILS + "/" + id.toString();
+		image.url = "/public/pictures/" + gallery.id.toString() + "/" + Application.RESIZED + "/" + id.toString();
 		image.title = title;
 		return image;
 	}

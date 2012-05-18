@@ -9,3 +9,5 @@ PicasaGalleries=Albums Picasa
 name=Nom
 url=Adresse http
 PicasaGallery=Picasa Album
+albumId=Album ID
+user=Utilisateur Picasa

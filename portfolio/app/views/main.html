@@ -16,19 +16,10 @@
 <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
 <script src="@{'/public/javascripts/jquery-1.6.4.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
 <script src="@{'/public/javascripts/bootstrap-modal.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+<script src="@{'/public/javascripts/bootstrap-dropdown.js'}" type="text/javascript" charset="${_response_encoding}"></script>
 #{get 'moreScripts' /}
 <script src="@{'/public/javascripts/glisse.js'}" type="text/javascript" charset="${_response_encoding}"></script>
 	
-		<script type="text/javascript">
-	$(function() {  
-    $("#controller").jFlow({  
-        slides: "#slides",  
-        width: "980px",  
-        height: "313px",  
-        duration: 600
-    });  
-});  
-	</script>
 </head>
 <body>
 	<div class="container">
@@ -36,53 +27,58 @@
 		<div class="navbar">
 			<div class="navbar-inner">
 				<div class="container">
-						#{if session.username}
-						<a class="brand" href="@{CRUD.index}">Administration</a>
-						#{/if}
-						#{else}
-						<a class="brand" href="@{Application.index()}">Sarah Alcalay</a>
-						#{/else}	
-						<ul class="nav">
-							#{if session.username}
-							<li><a href="@{Contents.list}">Presse</a></li>
-							#{/if}
-							#{else}
-							<li><a href="@{Application.showContents()}">Presse</a></li>
-							#{/else}
-							
+					#{if session.username}
+					<a class="brand" href="@{CRUD.index}">Administration</a>
+					<ul class="nav">
+						<li class="divider-vertical" />
+						<li><a href="@{Contents.list}">Presse</a></li>
+						
+						<li class="divider-vertical" />						
+						<li class="dropdown">
+  							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Albums <b class="caret"></b></a>
+ 							<ul class="dropdown-menu">
 							#{list items:controllers.Application.getGalleries(), as:'gallery'}
-							<li class="">
-							#{if session.username}
-								<a href="@{Galleries.show(gallery.id)}">${gallery}</a>
-							#{/if}
-							#{else}
-								<a href="@{Application.showGallery(gallery.id, gallery.name?.slugify())}">${gallery}</a>								
-							#{/else}
-							</li>
+							<li class=""><a href="@{Galleries.show(gallery.id)}">${gallery}</a></li>
 							#{/list}
-						
+							<li class="divider"></li>
+							<li><a href="@{Galleries.blank()}">Créer un nouvel album</a></li>
+							</ul>
+						</li>
+
+						<li class="divider-vertical" />												
+						<li class="dropdown">
+  							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Picasa <b class="caret"></b></a>
+ 							<ul class="dropdown-menu">
+								#{list items:controllers.Application.getPicasaGalleries(), as:'gallery'}
+								<li class=""><a href="@{PicasaGalleries.show(gallery.id)}">${gallery}</a></li>
+								#{/list}
+		                    	<li class="divider"></li>
+		                    	<li><a href="@{PicasaGalleries.blank()}">Partager un album Picasa</a></li>
+		                    	<li><a href="@{PicasaGalleries.list()}">Liste des albums</a>
+		                    </ul>
+						</li>
+						<li class="divider-vertical" />
+					</ul>
+					<p class="navbar-text pull-right" style="padding-right: 30px; ">
+						<a class="btn-small btn-danger" href="@{Secure.logout()}"><i class="icon-off icon-white"></i> Quitter la zone d'administration</a>
+					</p>
+					#{/if}
+					#{else}
+						<a class="brand" href="@{Application.index()}">Sarah Alcalay</a>
+						<ul class="nav">
+							<li class="divider-vertical"></li>
+							<li><a href="@{Application.showContents()}">Presse</a></li>
+							<li class="divider-vertical"></li>
+							#{list items:controllers.Application.getGalleries(), as:'gallery'}
+							<li class=""><a href="@{Application.showGallery(gallery.id, gallery.name?.slugify())}">${gallery}</a></li>								
+							<li class="divider-vertical" />
+							#{/list}
 							#{list items:controllers.Application.getPicasaGalleries(), as:'gallery'}
-							<li class="">
-							#{if session.username}
-								<a href="@{PicasaGalleries.show(gallery.id)}">${gallery}</a>
-							#{/if}
-							#{else}
-								<a href="@{Application.showPicasaGallery(gallery.id, gallery.name?.slugify())}">${gallery}</a>								
-							#{/else}
-							</li>
+							<li class=""><a href="@{Application.showPicasaGallery(gallery.id, gallery.name?.slugify())}">${gallery}</a></li>								
+							<li class="divider-vertical" />
 							#{/list}
-							
-							#{if session.username}
-							<li><a class="btn-small" href="@{Galleries.blank()}"><i class="icon-plus icon-white"></i></a>
-							<li><a class="btn-small" href="@{PicasaGalleries.list()}">Picasa</a>
-							#{/if}
 						</ul>
-						
-						#{if session.username}
-						<p class="navbar-text pull-right" style="padding-right: 30px; ">
-							<a class="btn-small btn-danger" href="@{Secure.logout()}"><i class="icon-off icon-white"></i> Quitter la zone d'administration</a>
-						</p>
-						#{/if}
+						#{/else}
 				</div>
 			</div>
 		</div>

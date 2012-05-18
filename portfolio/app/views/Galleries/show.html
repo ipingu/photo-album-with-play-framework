@@ -4,7 +4,7 @@
 	<div class="span12">
 		<div class="well">
 			<div class="pull-right">
-			<div class="modal hide fade" id="myModal">
+			<div class="modal hide" id="myModal">
 			  <div class="modal-header">
 			    <button class="close" data-dismiss="modal">×</button>
 			    <h3>Suppression confirmation</h3>
@@ -26,7 +26,7 @@
 					<legend><h1>Album settings</h1></legend>
 					<div class="control-group #{ifError 'NoFile'}error#{/ifError}">
 						<label for="name">Name</label>
-						<div class="controls">
+						<div class<="controls">
 							<input id="name" name="name" type="text" value="${object.name}" />
 							#{ifError 'name'}<p class="help-inline error">Nom invalide</p>#{/ifError}
 						    <button type="submit" class="btn btn-primary">Update</button>

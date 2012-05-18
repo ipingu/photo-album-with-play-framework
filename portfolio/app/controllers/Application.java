@@ -28,7 +28,7 @@ import models.*;
 public class Application extends Controller {
 
 	public static final File FILE_FOLDER = Play.getFile("public/pictures/");
-	
+
 	public static final String THUMBNAILS = "thumbnail";
 	public static final String FULLSIZE = "fullsize";
 	public static final String RESIZED = "resized";
@@ -79,7 +79,7 @@ public class Application extends Controller {
     	notFoundIfNull(gallery);
     	
     	PicasawebService service = new PicasawebService("portfolio");
-    	java.net.URL feedUrl = new java.net.URL(gallery.url);
+    	java.net.URL feedUrl = new java.net.URL(gallery.getFeedUrl());
  
     	AlbumFeed feed = service.getFeed(feedUrl, AlbumFeed.class);
     	List<PhotoEntry> photoEntries = feed.getPhotoEntries();

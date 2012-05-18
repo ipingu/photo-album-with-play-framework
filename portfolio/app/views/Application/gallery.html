@@ -7,11 +7,10 @@
 			#{/if}
 			
 			<div class="span3">
-				<a href="${image.url}">
-					<img style="border:1px solid #333; padding:3px" title="${image.title}" src="${image.thumbnail}" alt="${image.title}" />
+				<a class="openModal" href="#myModal">
+					<img data-fullsize="${image.url}" style="border:1px solid #333; padding:3px" title="${image.title}" src="${image.thumbnail}" alt="${image.title}" />
 				</a>
 			</div>
-			
 			
 			#{if image_isLast}
 				#{list items:1..(3 - (image_index % 4))}
@@ -22,4 +21,20 @@
 			#{if image_index % 4 == 0}
 			</div> <!-- end row -->
 			#{/if}
-		#{/list}
+			
+			#{/list}
+
+<div class="modal hide" id="myModal">
+	<div class="modal-header">
+		<button class="close" data-dismiss="modal">×</button>
+		<h2>picture</h2>
+	</div>
+	<div class="modal-body"></div>
+</div>
+
+<script type="text/javascript">
+$('.openModal').click(function() {
+	$(".modal-body").html('<img src="' + jQuery("img", this).data("fullsize") + '" />');
+	$("#myModal").modal('show');
+});
+</script>

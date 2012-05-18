@@ -8,6 +8,7 @@
 # Home page
 GET     /                                       Application.index
 GET 	/album/{id}/{name}						Application.showGallery
+GET 	/picasa/album/{id}/{name}				Application.showPicasaGallery
 GET		/presse									Application.showContents
 
 # Ignore favicon requests
