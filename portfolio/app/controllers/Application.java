@@ -73,27 +73,39 @@ public class Application extends Controller {
     	render("Application/gallery.html", images, gallery);
     }
     
-    public static void showPicasaGallery(Long id, String name) throws IOException, ServiceException {
+    public static void showPicasaGallery(Long id, String name) {
     	notFoundIfNull(id);
     	PicasaGallery gallery = PicasaGallery.findById(id);
     	notFoundIfNull(gallery);
     	
     	PicasawebService service = new PicasawebService("portfolio");
-    	java.net.URL feedUrl = new java.net.URL(gallery.getFeedUrl());
+    	List<PhotoEntry> photoEntries = Collections.emptyList();
+		try {
+			java.net.URL feedUrl = new java.net.URL(gallery.getFeedUrl());
+			
+			AlbumFeed feed = service.getFeed(feedUrl, AlbumFeed.class);
+			photoEntries = feed.getPhotoEntries();
+		} catch (MalformedURLException e) {
+			Logger.error("Service URL for Picasa is not well formed");
+			e.printStackTrace();
+		} catch (IOException e) {
+			Logger.error("Error I/O while communicating with Picasa Service");
+			e.printStackTrace();
+		} catch (ServiceException e) {
+			Logger.error("Picasa service error");
+			e.printStackTrace();
+		}
  
-    	AlbumFeed feed = service.getFeed(feedUrl, AlbumFeed.class);
-    	List<PhotoEntry> photoEntries = feed.getPhotoEntries();
-
-    	List<ImageView> images = new ArrayList<ImageView>();
-    	for (PhotoEntry entry : photoEntries) {
-    		ImageView image = new ImageView();
-    		// We take the largest
-    		image.thumbnail = entry.getMediaThumbnails().get(entry.getMediaThumbnails().size() - 1).getUrl();
-    		image.url = entry.getMediaContents().get(0).getUrl();
-    		images.add(image);
-    	}
-    	
-    	render("Application/gallery.html", images, gallery);
+		List<ImageView> images = new ArrayList<ImageView>();
+		for (PhotoEntry entry : photoEntries) {
+			ImageView image = new ImageView();
+			// We take the largest
+			image.thumbnail = entry.getMediaThumbnails().get(entry.getMediaThumbnails().size() - 1).getUrl();
+			image.url = entry.getMediaContents().get(0).getUrl();
+			images.add(image);
+		}
+		
+		render("Application/gallery.html", images, gallery);
     }
     
     public static void showContents() {
