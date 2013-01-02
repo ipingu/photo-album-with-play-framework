@@ -13,7 +13,7 @@ public class MySecurity extends Secure.Security {
 
 	static boolean authentify(String username, String password) {
 		String cryptedPassword = Crypto.passwordHash(password);
-
+		System.out.println(cryptedPassword);
 		return Play.configuration.getProperty("admin.login").equals(username) 
 			&& Play.configuration.getProperty("admin.password").equals(cryptedPassword);
 	}

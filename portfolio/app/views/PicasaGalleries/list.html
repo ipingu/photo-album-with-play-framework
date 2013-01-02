@@ -1,0 +1,23 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:"Liste des albums Picasa" /}
+
+
+<div class="row">
+	<div class="span12">
+		<div class="well">
+			<h1>Albums de Picasa</h1>
+			
+			<div style="text-align: right">
+				<a class="btn btn-primary" href="@{blank()}">Publier un album provenant de Picasa</a>
+			</div>
+			
+		    #{crud.table fields:['id', 'name']}
+		    
+		        #{crud.custom 'name'}
+					#{a @PicasaGalleries.show(object.id)}${object.name}#{/a}
+				#{/crud.custom}
+		    
+		    #{/crud.table}
+		</div>
+	</div>
+</div>

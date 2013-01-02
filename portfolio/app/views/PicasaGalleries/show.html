@@ -1,0 +1,23 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.show.title', type.modelName) /}
+
+<div id="crudShow" class="row">
+	<div class="span12">
+		<div class="well">
+		    <h1>Modifier un album de Picasa</h1>
+		   
+		    <div style="text-align: right">
+		    #{form @delete(object._key())}
+		    <input class="btn btn-danger" type="submit" value="Ne plus afficher l'album" />
+			#{/form}    
+			</div>
+			
+		    #{form action:@save(object._key()), enctype:'multipart/form-data'}
+		        #{crud.form /}
+		        <p class="crudButtons">
+		            <input type="submit" name="_save" value="Sauvegarder" class="btn btn-primary"/>
+		        </p>
+		    #{/form}
+		</div>
+    </div>
+</div>

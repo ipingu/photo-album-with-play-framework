@@ -5,13 +5,9 @@ import java.io.File;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
-import controllers.Application;
-
-import play.data.validation.Required;
 import play.db.jpa.Model;
-import play.libs.Files;
 import play.libs.Images;
-import play.mvc.Util;
+import controllers.Application;
 
 @Entity
 public class Picture extends Model {
@@ -32,7 +28,7 @@ public class Picture extends Model {
 	
 	public void upload(File file) {
     	File galleryFolder = new File(Application.FILE_FOLDER, gallery.id.toString());
-    	
+
     	// Mini
     	File thumbnail = new File(galleryFolder, Application.THUMBNAILS + File.separatorChar + this.id);
     	Images.resize(file, thumbnail, 200, 150, true);
@@ -46,7 +42,7 @@ public class Picture extends Model {
 		File file = new File(Application.FILE_FOLDER, galleryId.toString() + File.separatorChar + pictureType + File.separatorChar + pictureId.toString());
 		return file;
 	}
-	
+		
 	public ImageView toImageView() {
 		ImageView image = new ImageView();
 		image.thumbnail = "/public/pictures/" + gallery.id.toString() + "/" + Application.THUMBNAILS + "/" + id.toString();
