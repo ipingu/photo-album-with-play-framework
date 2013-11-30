@@ -1,0 +1,21 @@
+#{extends 'CRUD/layout.html' /}
+
+<div class="row">
+	<div class="span12">
+		<div class="well">
+			<form action="@{Christmas.sendMailToParticipants}" class="form-horizontal" enctype="multipart/form-data" method="post">
+				<fieldset>
+					<legend><h1>Christmas Participants</h1></legend>
+					#{list items:0..15), as:'i'}
+					<div>
+						<input id="name" name="name" type="text" placeholder="Name"/>
+						<input id="email" name="email" type="text" placeholder="Email"/>
+					</div>
+					#{/list}
+					<p class="crudButtons"><button type="submit" class="btn btn-primary">Send mail to all participants</button></p>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</div>
+

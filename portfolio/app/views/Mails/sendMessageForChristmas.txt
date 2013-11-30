@@ -1,0 +1,9 @@
+Oh oh oh ${fromChild.name},
+
+Le père noël t'a choisi pour offrir un merveilleux cadeau à ${toChild.name}.
+
+Pour être sûr que l'on n'oublie personne, voici la liste des cadeaux que vous ferez ce soir là. Si tu te cherches dans la liste, sache que tu es l'enfant numéro ${fromChild.secretName}, et que ${toChild.name} est le numéro ${toChild.secretName}. Qui est qui ? Nous le saurons le 24 !
+
+${listOfGifts}
+
+A très bientôt !
